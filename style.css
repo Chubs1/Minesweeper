@@ -1,0 +1,114 @@
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: grey;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+#board {
+  margin: auto;
+  position: relative;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+div {
+  line-height: 0;
+}
+.cell {
+  text-align: center;
+  display: inline-block;
+  background: url(mountain.jpg);
+  background-repeat: no-repeat;
+  background-size: 25px;	
+  min-width: 25px;
+  min-height: 25px;
+}
+
+.mine0 {
+  background-image: url(Minesweeper_0.svg)
+}
+
+.mine1 {
+  background-image: url(Minesweeper_1.svg)
+}
+
+.mine2 {
+  background-image: url(Minesweeper_2.svg)
+}
+
+.mine3 {
+  background-image: url(Minesweeper_3.svg)
+}
+
+.mine4 {
+  background-image: url(Minesweeper_4.svg)
+}
+
+.mine5 {
+  background-image: url(Minesweeper_5.svg)
+}
+
+.mine6 {
+  background-image: url(Minesweeper_6.svg)
+}
+
+.mine7 {
+  background-image: url(Minesweeper_7.svg)
+}
+
+.mine8 {
+  background-image: url(Minesweeper_8.svg)
+}
+
+.mine {
+  background-image: url(Mine.jpg);
+}
+
+.covered {
+  background-image: url(Minesweeper_unopened_square.svg);
+}
+
+.flagged {
+  background-color: red;
+  background-image: url(Minesweeper_flag.svg);
+}
+
+#mine-counter {
+  text-align:center;
+  position: absolute;
+  top:10%;
+  left:10%;
+}
+
+#timer {
+  position: absolute;
+  top:0%;
+  left:10%;
+}
+
+#high-score {
+  text-align:center;
+  position: absolute;
+  top:8%;
+  left:10%;
+}
