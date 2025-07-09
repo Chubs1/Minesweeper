@@ -1,47 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Minesweeper</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <h1 id = "mine-counter"></h1>
-    <h2 id = "high-score"></h2>
-    <h1 id = "timer"></h1>
-    
-    <form id = "controls">
-      <p>Rows Columns Mines</p>
-      <input type="radio" id="beginner" name="levels" value="0" checked="true"> 
-      <label for="beginner">Beginner: 9, 9, 10</label>
-      <br>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Minesweeper</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<h1 id="mine-counter"></h1>
+<h2 id="high-score"></h2>
+<h1 id="timer"></h1>
+
+<form id="controls">
+  <fieldset>
+    <legend>Select Difficulty</legend>
+    <label>
+      <input type="radio" id="beginner" name="levels" value="0" checked>
+      Beginner: 9 x 9, 10 mines
+    </label>
+    <label>
       <input type="radio" id="intermediate" name="levels" value="1">
-      <label for="intermediate">Intermediate: 16, 16, 40</label> 
-      <br>
+      Intermediate: 16 x 16, 40 mines
+    </label>
+    <label>
       <input type="radio" id="expert" name="levels" value="2">
-      <label for="expert">Expert: 16, 30, 99</label> 
-      <br>
-      <input type="radio" id="custom" name="levels" value="3"> 
-      <label for="custom">Custom: </label>
-
-
-      <input type="number" min="2" max="1000" value="9" class="ticker" id="rowSelector">
-      
-      <input type="number" min="2" max="1000" value="9" class="ticker" id="columnSelector">
-
-      <input type="number" min="1" max="72" value="10" class="ticker" id="mineSelector">
-      
-      <br>
-      <br>
-      <button type = "submit">Generate</button>
-    </form>
-   
-
-    <div id = "board" oncontextmenu="return false;">
-      
+      Expert: 16 x 30, 99 mines
+    </label>
+    <label>
+      <input type="radio" id="custom" name="levels" value="3">
+      Custom:
+    </label>
+    <div class="custom-inputs">
+      <input type="number" min="2" max="1000" value="9" class="ticker" id="rowSelector" placeholder="Rows" size="5" />
+      <input type="number" min="2" max="1000" value="9" class="ticker" id="columnSelector" placeholder="Columns" size="5"  />
+      <input type="number" min="1" max="1000" value="10" class="ticker" id="mineSelector" placeholder="Mines" size="5" />
     </div>
-    
-    <script src="./main.js"></script>
-  </body>
+  </fieldset>
+  <button type="submit">Generate</button>
+</form>
+
+<div id="board" oncontextmenu="return false;"></div>
+
+<script src="main.js"></script>
+</body>
 </html>

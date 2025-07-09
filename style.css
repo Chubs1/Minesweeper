@@ -1,114 +1,130 @@
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+:root {
+  --cell-size: 25px;
 }
-a:hover {
-  color: #535bf2;
-}
-
 body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f2f5;
   margin: 0;
+  padding: 2rem;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  background-color: grey;
+  flex-direction: column;
+  align-items: center;
 }
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-#board {
-  margin: auto;
-  position: relative;
-  -webkit-user-drag: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-}
-
-div {
-  line-height: 0;
-}
-.cell {
+#mine-counter, #high-score, #timer {
+  margin: 0.5rem;
   text-align: center;
+}
+#mine-counter { font-size: 2rem; color: #444; }
+#high-score { font-size: 1rem; color: #666; }
+#timer { font-size: 1.5rem; color: #333; }
+#controls {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 400px;
+}
+#controls fieldset { border: none; margin: 0; padding: 0; }
+#controls legend {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+#controls label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.custom-inputs input {
+  width: 10ch
+}
+
+#controls input[type="radio"] {
+  margin-right: 0.5rem;
+}
+.custom-inputs {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.custom-inputs input {
+  flex: 1;
+  padding: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+#controls button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.6rem;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+#controls button:hover {
+  background-color: #0056b3;
+}
+#board {
+  display: grid;
+  gap: 0;
+  border: 4px solid #333;
+  border-radius: 6px;
+  background-color: #999;
+  padding: 2px;
+  box-sizing: border-box;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+#board > div {
+  display: flex;
+  flex-wrap: nowrap;
+  height: var(--cell-size);
+}
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  padding: 0;
+  border: none;
   display: inline-block;
-  background: url(mountain.jpg);
-  background-repeat: no-repeat;
-  background-size: 25px;	
-  min-width: 25px;
-  min-height: 25px;
+  background-size: cover;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+  font-size: 1rem;
+  user-select: none;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-.mine0 {
-  background-image: url(Minesweeper_0.svg)
+.input-error {
+  box-shadow: 0 0 8px 2px red;
+  border-color: red;
 }
 
-.mine1 {
-  background-image: url(Minesweeper_1.svg)
-}
 
-.mine2 {
-  background-image: url(Minesweeper_2.svg)
-}
+.mine0 { background-image: url(Images/Minesweeper_0.svg); }
+      .mine1 { background-image: url(Images/Minesweeper_1.svg); }
+      .mine2 { background-image: url(Images/Minesweeper_2.svg); }
+      .mine3 { background-image: url(Images/Minesweeper_3.svg); }
+      .mine4 { background-image: url(Images/Minesweeper_4.svg); }
+      .mine5 { background-image: url(Images/Minesweeper_5.svg); }
+      .mine6 { background-image: url(Images/Minesweeper_6.svg); }
+      .mine7 { background-image: url(Images/Minesweeper_7.svg); }
+      .mine8 { background-image: url(Images/Minesweeper_8.svg); }
 
-.mine3 {
-  background-image: url(Minesweeper_3.svg)
-}
-
-.mine4 {
-  background-image: url(Minesweeper_4.svg)
-}
-
-.mine5 {
-  background-image: url(Minesweeper_5.svg)
-}
-
-.mine6 {
-  background-image: url(Minesweeper_6.svg)
-}
-
-.mine7 {
-  background-image: url(Minesweeper_7.svg)
-}
-
-.mine8 {
-  background-image: url(Minesweeper_8.svg)
-}
-
-.mine {
-  background-image: url(Mine.jpg);
-}
-
-.covered {
-  background-image: url(Minesweeper_unopened_square.svg);
-}
-
-.flagged {
-  background-color: red;
-  background-image: url(Minesweeper_flag.svg);
-}
-
-#mine-counter {
-  text-align:center;
-  position: absolute;
-  top:10%;
-  left:10%;
-}
-
-#timer {
-  position: absolute;
-  top:0%;
-  left:10%;
-}
-
-#high-score {
-  text-align:center;
-  position: absolute;
-  top:8%;
-  left:10%;
-}
+      .mine { background-image: url(Images/Mine.jpg); }
+      .covered { background-image: url(Images/Minesweeper_unopened_square.svg); }
+      .flagged {background-image: url(Images/Minesweeper_flag.svg); }

@@ -1,2 +1,2 @@
 # Minesweeper
-Standard Minesweeper, bad graphics
+Standard Minesweeper with full control functionality.

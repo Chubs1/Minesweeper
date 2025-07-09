@@ -15,12 +15,30 @@ let minesFlagged = 0;
 let startTime
 let won = true;
 let elasped = 0;
+let mouseDown = -1
 let settings = {
     rows : 9,
     columns : 9,
     mines : 10,
     level : 0
 }
+
+const customRadio = document.getElementById('custom');
+const customInputs = [rowSelector, columnSelector, mineSelector];
+
+customRadio.addEventListener('change', () => {
+  if (customRadio.checked) {
+    customInputs.forEach(input => input.required = true);
+  }
+});
+
+document.querySelectorAll('input[name="levels"]').forEach(radio => {
+  if (radio !== customRadio) {
+    radio.addEventListener('change', () => {
+      customInputs.forEach(input => input.required = false);
+    });
+  }
+});
 
 const winHelper = () => {
     console.log("you win")
@@ -31,20 +49,20 @@ const winHelper = () => {
     if(settings.level == 0){
         if(getCookie("beginner") > elasped){
         document.cookie = `beginner=${elasped};expires=Thu, 18 Dec 2033 12:00:00 UTC `
-        highScore.textContent = `beginner: ${getCookie("beginner")} Seconds`
+        highScore.textContent = `Beginner: ${getCookie("beginner")} Seconds`
         }
     } else if(settings.level == 1){
         document.cookie = `intermediate=${elasped};expires=Thu, 18 Dec 2033 12:00:00 UTC `
-        highScore.textContent = `intermediate: ${getCookie("intermediate")} Seconds`
+        highScore.textContent = `Intermediate: ${getCookie("intermediate")} Seconds`
     } else if(settings.level == 2){
         document.cookie = `expert=${elasped};expires=Thu, 18 Dec 2033 12:00:00 UTC `
-        highScore.textContent = `expert: ${getCookie("expert")} Seconds`
+        highScore.textContent = `Expert: ${getCookie("expert")} Seconds`
     }
 }
 
 const loseHelper = cell => {
     //TK make it so it reveals mines
-    cell.style.backgroundImage = `url("redMine.jpg")`
+    cell.style.backgroundImage = `url("Images/redMine.jpg")`
     console.log("you lose")
     lost = true;
     mineCounter.textContent = "YOU LOST"
@@ -102,15 +120,31 @@ const revealCellHelper = cell => {
     }
 }
 
-const createBoard = (COLUMNS, ROWS) => {
-    board.innerHTML = ""
-    for (let i = 0; i < COLUMNS; i++) {
-        const element = document.createElement('div');
-        board.appendChild(element);
-        for (let j = 0; j < ROWS; j++) {
-            element.insertAdjacentHTML("beforeend", `<span class="cell covered" data-column="${i}" data-row="${j}" data-mines="0" data-flags="0"></span>`);
-        }
+
+
+const createBoard = (ROWS, COLUMNS) => {
+  board.innerHTML = "";
+  board.addEventListener('mousedown', (event) => {
+    if (event.button === 1) {
+      event.preventDefault();
     }
+  });
+
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 0; col < COLUMNS; col++) {
+      board.insertAdjacentHTML("beforeend", `<span class="cell covered" data-row="${row}" data-column="${col}" data-mines="0" data-flags="0"></span>`);
+    }
+  }
+  board.style.gridTemplateColumns = `repeat(${COLUMNS}, var(--cell-size))`;
+}
+const  updateCellSize = (columns) => {
+  const screenWidth = window.innerWidth;
+  const padding = 20;
+  const maxCellSize = 25;
+  let cellSize = Math.floor((screenWidth - padding) / columns);
+  if (cellSize > maxCellSize) cellSize = maxCellSize;
+  document.documentElement.style.setProperty('--cell-size', `${cellSize}px`);
+  board.style.gridTemplateColumns = `repeat(${columns}, var(--cell-size))`;
 }
 
 const updateMines = nearby => {
@@ -145,7 +179,7 @@ const addMine = event => {
     }
     const row = Math.floor((Math.random() * settings.rows))
         const column = Math.floor((Math.random() * settings.columns))
-        const element = document.querySelector(`[data-row="${column}"][data-column="${row}"]`)
+        const element = document.querySelector(`[data-row="${row}"][data-column="${column}"]`)
         if(!element.classList.contains("mine") && !safeCells.includes(element)){
             element.classList.add("mine")
             surroundingCells(element, updateMines)
@@ -166,9 +200,22 @@ const firstClickEvent = event => {
 
 const handleCellClick = () => {
     
+    document.addEventListener('mousedown', event => {
+        mouseDown = event.button
+    })
+        document.addEventListener('mouseup', () => {
+        mouseDown = -1
+    })
+
     const cells = document.querySelectorAll(".cell")
     cells.forEach(cell => {
         cell.addEventListener("mouseup", event => {
+            console.log("bang")
+                surroundingCells(cell, (nearby) => {
+                    if(nearby && nearby.classList.contains("covered") && !nearby.classList.contains("flagged")) nearby.style.backgroundImage = ''
+                } )
+            
+
             console.log(event.button)
             console.log(cell)
          
@@ -190,7 +237,7 @@ const handleCellClick = () => {
                 }
                 }
                                         // make it so the flags around it is equal to the mineN class N 
-                if(event.button == 1 && event.currentTarget.dataset.flags == event.currentTarget.dataset.mines && !event.currentTarget.classList.contains("covered")){
+                if((event.button == 1 || event.button == 0) && event.currentTarget.dataset.flags == event.currentTarget.dataset.mines && !event.currentTarget.classList.contains("covered")){
                     //middle click function
                     surroundingCells(cell, middleClickHelper, 1)
                 }
@@ -211,18 +258,37 @@ const handleCellClick = () => {
 
         cell.addEventListener("mouseenter", () => {
           if (cell.classList.contains("covered") && !cell.classList.contains("flagged")) {
-            cell.style.backgroundImage = 'url("mine0.jpg")'
-          }
+            if(mouseDown == 0) cell.style.backgroundImage = 'url("Images/Minesweeper_0.svg")'
+            if(mouseDown == 1) surroundingCells(cell, (nearby) => { 
+                if (nearby && nearby.classList.contains("covered") && !nearby.classList.contains("flagged")) nearby.style.backgroundImage = 'url("Images/Minesweeper_0.svg")'
+            })
+        } 
         });
 // get when mouse down and when up take away style and the surronding
         
         cell.addEventListener("mouseleave", () => {
             if (cell.style.backgroundImage) {
-                cell.style.backgroundImage = ""; // remove custom inline image only
+                surroundingCells(cell, (nearby) => {
+                    console.log(nearby)
+                    if (nearby && nearby.classList.contains("covered") && !nearby.classList.contains("flagged")) nearby.style.backgroundImage = ''
+                    
+                } )
             }
         });
         
         cell.addEventListener("mousedown", event => {
+            if (cell.classList.contains("covered") && !cell.classList.contains("flagged")){
+            if(event.button == 0){
+                cell.style.backgroundImage = 'url("Images/Minesweeper_0.svg")'
+            }
+            else if(event.button == 1){
+                surroundingCells(cell, (nearby) => {
+                    if(nearby && nearby.classList.contains("covered") && !nearby.classList.contains("flagged")) nearby.style.backgroundImage = 'url("Images/Minesweeper_0.svg")'
+                } )
+            }
+        }
+
+
             if(event.ctrlKey || event.button == 2){
                 if(cell.classList.contains("covered")) {
                     if(cell.classList.toggle("flagged")){
@@ -232,9 +298,9 @@ const handleCellClick = () => {
                         minesFlagged--
                         surroundingCells(cell, updateFlags, -1)
                     }
-                    mineCounter.innerHTML = `Mines <br> ${minesFlagged}/${settings.mines}`
+                    mineCounter.innerHTML = `Mines left: ${settings.mines-minesFlagged}`
                     if(minesFlagged > settings.mines){
-                        mineCounter.innerHTML = `Mines <br> ${minesFlagged}/${settings.mines}?`    
+                        mineCounter.innerHTML = `Mines left: ${settings.mines-minesFlagged}`   
                     }
                 }
             }
@@ -264,22 +330,23 @@ form.addEventListener("click", event => {
         } else {
             cookie = getCookie("beginner")
         }
-        highScore.textContent = `beginner: ${cookie} Seconds`
+        highScore.textContent = `Highscore: ${cookie} Seconds`
     } else if(event.target.getAttribute("id") == "intermediate"){
         if(getCookie("intermediate") == ``){
             cookie = 0
         } else {
             cookie = getCookie("intermediate")
         }
-        highScore.textContent = `intermediate: ${cookie} Seconds`
+        highScore.textContent = `Highscore: ${cookie} Seconds`
     } else if(event.target.getAttribute("id") == "expert"){
         if(getCookie("expert") == ``){
             cookie = 0
         } else {
             cookie = getCookie("expert")
         }
-        highScore.textContent = `expert: ${cookie} Seconds`
+        highScore.textContent = `Highscore: ${cookie} Seconds`
     }
+    
 })
 // hitting generate button
 form.addEventListener("submit", event => {
@@ -301,26 +368,31 @@ form.addEventListener("submit", event => {
         settings.mines = 99
         settings.columns = 30
     } else if (settings.level == 3){
-        settings.rows = rowSelector.value
-        settings.mines = mineSelector.value 
-        settings.columns = columnSelector.value
+        settings.rows = rowSelector.value.trim()
+        settings.mines = mineSelector.value.trim()
+        settings.columns = columnSelector.value.trim()
         document.cookie = `custom=${[rowSelector.value, columnSelector.value, mineSelector.value, (rowSelector.value * columnSelector.value - 9)]};expires=Thu, 18 Dec 2033 12:00:00 UTC `
         mineSelector.setAttribute("max", (rowSelector.value * columnSelector.value) - 9)
     }
 
     firstClick = true;
-    timer.textContent = 0;
+    timer.textContent = 0 + " Seconds";
     minesFlagged = 0;
-    mineCounter.innerHTML = `Mines <br> ${minesFlagged}/${settings.mines}` 
+    mineCounter.innerHTML = `Mines left: ${settings.mines-minesFlagged}` 
     createBoard(settings.rows, settings.columns)
+    updateCellSize(settings.columns)
     handleCellClick()  
 })
+window.addEventListener("resize", () => {
+  updateCellSize(settings.columns);
+});
+
 //update timer
 setInterval(function() {
     if(!won && !lost && !firstClick){
     elasped = new Date() - startTime; 
     console.log(elasped)
-    timer.textContent = Math.floor(elasped/1000)
+    timer.textContent = Math.floor(elasped/1000) + " Seconds"
     }
   }, 1000);
 
@@ -340,9 +412,10 @@ function getCookie(cname) {
     return "";
   }
 
-mineCounter.innerHTML = `Mines <br> ${minesFlagged}/${settings.mines}`
-timer.textContent = 0;
-highScore.textContent = `beginner: ${getCookie("beginner")} Seconds`
+mineCounter.innerHTML = `Mines left: ${settings.mines-minesFlagged}`
+timer.textContent = 0 + " Seconds";
+
+highScore.textContent = `Highscore: ${getCookie("beginner")} 0 Seconds`
 console.log(getCookie("custom").split(",")[getCookie("custom").split(",").length - 1])
 
 createBoard(settings.rows, settings.columns)
