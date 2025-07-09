@@ -257,12 +257,12 @@ const handleCellClick = () => {
         })
 
         cell.addEventListener("mouseenter", () => {
-          if (cell.classList.contains("covered") && !cell.classList.contains("flagged")) {
-            if(mouseDown == 0) cell.style.backgroundImage = 'url("Images/Minesweeper_0.svg")'
-            if(mouseDown == 1) surroundingCells(cell, (nearby) => { 
+                        if(mouseDown == 1) surroundingCells(cell, (nearby) => { 
                 if (nearby && nearby.classList.contains("covered") && !nearby.classList.contains("flagged")) nearby.style.backgroundImage = 'url("Images/Minesweeper_0.svg")'
             })
-        } 
+
+          if (cell.classList.contains("covered") && !cell.classList.contains("flagged") && mouseDown == 0)cell.style.backgroundImage = 'url("Images/Minesweeper_0.svg")'
+
         });
 // get when mouse down and when up take away style and the surronding
         
@@ -277,16 +277,14 @@ const handleCellClick = () => {
         });
         
         cell.addEventListener("mousedown", event => {
-            if (cell.classList.contains("covered") && !cell.classList.contains("flagged")){
-            if(event.button == 0){
-                cell.style.backgroundImage = 'url("Images/Minesweeper_0.svg")'
-            }
+            if (cell.classList.contains("covered") && !cell.classList.contains("flagged") && event.button == 0) cell.style.backgroundImage = 'url("Images/Minesweeper_0.svg")'
+            
             else if(event.button == 1){
                 surroundingCells(cell, (nearby) => {
                     if(nearby && nearby.classList.contains("covered") && !nearby.classList.contains("flagged")) nearby.style.backgroundImage = 'url("Images/Minesweeper_0.svg")'
                 } )
             }
-        }
+        
 
 
             if(event.ctrlKey || event.button == 2){
