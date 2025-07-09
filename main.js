@@ -267,13 +267,12 @@ const handleCellClick = () => {
 // get when mouse down and when up take away style and the surronding
         
         cell.addEventListener("mouseleave", () => {
-            if (cell.style.backgroundImage) {
                 surroundingCells(cell, (nearby) => {
                     console.log(nearby)
                     if (nearby && nearby.classList.contains("covered") && !nearby.classList.contains("flagged")) nearby.style.backgroundImage = ''
                     
                 } )
-            }
+            
         });
         
         cell.addEventListener("mousedown", event => {
