@@ -54,7 +54,6 @@ const loseHelper = cell => {
 }
 
 const recursiveHelper = cell => {
-    //TK the recursive factor of this looks just fucking wierd and probably could be way better
     if(cell.dataset.mines == 0){
         
         for(let i = -1; i < 2; i++){
@@ -210,6 +209,19 @@ const handleCellClick = () => {
            }
         })
 
+        cell.addEventListener("mouseenter", () => {
+          if (cell.classList.contains("covered") && !cell.classList.contains("flagged")) {
+            cell.style.backgroundImage = 'url("mine0.jpg")'
+          }
+        });
+// get when mouse down and when up take away style and the surronding
+        
+        cell.addEventListener("mouseleave", () => {
+            if (cell.style.backgroundImage) {
+                cell.style.backgroundImage = ""; // remove custom inline image only
+            }
+        });
+        
         cell.addEventListener("mousedown", event => {
             if(event.ctrlKey || event.button == 2){
                 if(cell.classList.contains("covered")) {
