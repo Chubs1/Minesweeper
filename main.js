@@ -351,7 +351,7 @@ form.addEventListener("click", event => {
         }
         highScore.textContent = `Highscore: ${cookie} Seconds`
     } else if(event.target.getAttribute("id") == "custom"){
-    highScore.textContent = `No Highscore for Custom mode
+    highScore.textContent = `No Highscore for Custom mode`
     }
     
 })
