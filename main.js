@@ -419,8 +419,10 @@ function getCookie(cname) {
 
 mineCounter.innerHTML = `Mines left: ${settings.mines-minesFlagged}`
 timer.textContent = 0 + " Seconds";
-
-highScore.textContent = `Highscore: ${getCookie("beginner")} 0 Seconds`
+let cookie
+if(getCookie("beginner") == ``) cookie = 0
+else cookie = getCookie("beginner")
+highScore.textContent = `Highscore: ${cookie} Seconds`
 console.log(getCookie("custom").split(",")[getCookie("custom").split(",").length - 1])
 
 createBoard(settings.rows, settings.columns)
