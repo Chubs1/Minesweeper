@@ -51,19 +51,19 @@ const winHelper = () => {
         if(!beginnerHighScore || elasped < beginnerHighScore){
     
         document.cookie = `beginner=${elasped};expires=Thu, 18 Dec 2033 12:00:00 UTC `
-        highScore.textContent = `Beginner: ${getCookie("beginner")} Seconds`
+        highScore.textContent = `Highscore: ${getCookie("beginner")} Seconds`
         }
     } else if(settings.level == 1){
         const intermediateHighScore = parseFloat(getCookie("intermediate"));
         if(!intermediateHighScore || elasped < intermediateHighScore){
         document.cookie = `intermediate=${elasped};expires=Thu, 18 Dec 2033 12:00:00 UTC `
-        highScore.textContent = `Intermediate: ${getCookie("intermediate")} Seconds`
+        highScore.textContent = `Highscore: ${getCookie("intermediate")} Seconds`
         }
     } else if(settings.level == 2){
         const expertHighScore = parseFloat(getCookie("expert"));
         if(!expertHighScore || elasped < expertHighScore){
         document.cookie = `expert=${elasped};expires=Thu, 18 Dec 2033 12:00:00 UTC `
-        highScore.textContent = `Expert: ${getCookie("expert")} Seconds`
+        highScore.textContent = `Highscore: ${getCookie("expert")} Seconds`
         }
     }
 }
